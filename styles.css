@@ -21,3 +21,21 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 20px;
+}
+
+.square {
+    width: 70px;
+    height: 70px;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    border-radius: 15px;
+}
