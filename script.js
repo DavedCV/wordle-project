@@ -14,6 +14,10 @@ function makeSquares(){
 
 function keyPressed(ev){
     console.log("keyPressed");
+    let numberOfSquare = squareCounter % 5;
+    let numberOfRow = Math.floor(squareCounter / 5);
+    rowsChilds[numberOfRow][numberOfSquare].textContent = ev.key;
+    squareCounter++;
 }
 
 //selector to query the divs with class rows
@@ -23,4 +27,6 @@ makeSquares();
 
 const container = document.getElementsByClassName('container')[0];
 container.addEventListener('click',() => {container.focus()});
+
+let squareCounter = 0;
 container.addEventListener('keydown', keyPressed);
