@@ -1,0 +1,23 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+}
+
+.header {
+    text-align: center;
+    background-color: blueviolet;
+    color: white;
+    padding: 25px;
+    border-bottom: 2px solid black;;
+}
+
+.content {
+    height: 100vh;
+    background-color:cadetblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
