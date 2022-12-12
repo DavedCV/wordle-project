@@ -21,7 +21,7 @@ body {
     background-color:rgb(196, 242, 244);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     text-transform: uppercase;
 }
 
@@ -77,17 +77,26 @@ body {
     background-color: rgb(196, 242, 244);
     text-align: center;
     padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .spiral {
     font-size: 40px;
     animation: spin 1.5s linear infinite;
 }
+
+.hidden {
+    visibility: hidden;
+}
   
 @keyframes spin {
     to {
       transform: rotate(360deg);
     }
+}
+
+.winner {
+    animation: rainbow 4s infinite linear;
 }
 
 @keyframes rainbow {
@@ -129,7 +138,3 @@ body {
       border-color: rgb(255, 0, 127);
     }
   }
-  
-.winner {
-    animation: rainbow 4s infinite linear;
-}
