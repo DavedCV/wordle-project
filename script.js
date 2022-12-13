@@ -43,12 +43,16 @@ function keyPressed(ev){
 
 function compare(word){
     let copySelectedWord = selectedWord;
+    let correctPosition = 0;
     for (let i = 0; i < word.length; i++){
         if (copySelectedWord.indexOf(word[i]) != -1){
-            (copySelectedWord.indexOf(word[i]) === i) ? rowsChilds[0][i].classList.add("correct") :
+            (copySelectedWord.indexOf(word[i]) === i) ? (() => {rowsChilds[0][i].classList.add("correct");correctPosition++;})() :
             rowsChilds[0][i].classList.add("close");
-            copySelectedWord = selectedWord.replace(word[i], "-");
+            copySelectedWord = copySelectedWord.replace(word[i], "-");
         }
+    }
+    if (correctPosition == 5){
+        finishGame();
     }
 }
 
@@ -83,6 +87,17 @@ async function apiRandomWord(){
     infoBarSpiral.classList.add("hidden");
 }
 
+function finishGame() {
+    alert("You Win!\nGame finished.");
+    container.removeEventListener('keydown', entryPoint);
+}
+
+function entryPoint(ev) {
+    if (keyPressed(ev)){
+        squareCounter = (squareCounter + 1) % 6;
+    }
+}
+
 const infoBarSpiral = document.querySelector(".info-bar");
 
 let selectedWord;
@@ -98,8 +113,4 @@ container.addEventListener('click',() => {container.focus()});
 
 let actualWord = "";
 let squareCounter = 0;
-container.addEventListener('keydown', (ev) => {
-    if (keyPressed(ev)){
-        squareCounter = (squareCounter + 1) % 6;
-    }
-});
+container.addEventListener('keydown', entryPoint);
