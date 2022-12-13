@@ -18,8 +18,10 @@ function keyPressed(ev){
     if (isLetter(ev.key) && ev.code != "Enter" && ev.code != "Backspace"){
         rowsChilds[numberOfRow][numberOfSquare].textContent = ev.key;
         if (numberOfSquare == 4){
+            (actualWord.length == 5) ? actualWord = actualWord.slice(0,-1) + ev.key : actualWord += ev.key;
             return false;
         }
+        actualWord += ev.key;
         return true;
     }else if (squareCounter >= 0 && ev.code == "Backspace"){
         if (rowsChilds[numberOfRow][numberOfSquare].textContent != ""){
@@ -30,15 +32,45 @@ function keyPressed(ev){
             numberOfRow = Math.floor(squareCounter / 5);
             rowsChilds[numberOfRow][numberOfSquare].textContent = ""; 
         }
+        actualWord = actualWord.slice(0,-1);
+        console.log(actualWord);
         return false;   
-    }else if (numberOfSquare == 4 && ev.code == "Enter"){
+    }else if (numberOfSquare == 4 && ev.code == "Enter" && rowsChilds[numberOfRow][numberOfSquare].textContent != ""){
+        const promise = apiConfirmation(actualWord);
+        actualWord = "";
         return true;
     }
+}
+
+function compare(word){
+    console.log("parametro", word);
 }
 
 function isLetter(letter) {
     return /^[a-zA-Z]$/.test(letter);
 }
+
+async function apiConfirmation(word){
+    const promise = await fetch("https://words.dev-apis.com/validate-word", {
+        method: "POST",
+        body: JSON.stringify({"word": word})
+    })
+    const processedResponse = await promise.json();
+    console.log("en la funcion asincrona");
+    if (processedResponse.validWord === true){
+        compare(word);
+    }
+}
+
+async function apiRandomWord(){
+    const promise = await fetch("https://words.dev-apis.com/word-of-the-day");
+    const processedResponse = await promise.json();
+    selectedWord = processedResponse.word;
+}
+
+let selectedWord;
+apiRandomWord();
+console.log(selectedWord);
 
 //selector to query the divs with class rows
 const rows = document.querySelectorAll('.row');
@@ -48,6 +80,7 @@ makeSquares();
 const container = document.getElementsByClassName('container')[0];
 container.addEventListener('click',() => {container.focus()});
 
+let actualWord = "";
 let squareCounter = 0;
 container.addEventListener('keydown', (ev) => {
     if (keyPressed(ev)){
