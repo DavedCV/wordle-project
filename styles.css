@@ -2,7 +2,7 @@
     box-sizing: border-box;
 }
 
-div:focus{
+div:focus {
     outline: 0;
 }
 
