@@ -33,7 +33,6 @@ function keyPressed(ev){
             rowsChilds[numberOfRow][numberOfSquare].textContent = ""; 
         }
         actualWord = actualWord.slice(0,-1);
-        console.log(actualWord);
         return false;   
     }else if (numberOfSquare == 4 && ev.code == "Enter" && rowsChilds[numberOfRow][numberOfSquare].textContent != ""){
         const promise = apiConfirmation(actualWord);
@@ -43,7 +42,7 @@ function keyPressed(ev){
 }
 
 function compare(word){
-    console.log("parametro", word);
+    console.log("parametro: ", word);
 }
 
 function isLetter(letter) {
@@ -65,12 +64,12 @@ async function apiConfirmation(word){
 async function apiRandomWord(){
     const promise = await fetch("https://words.dev-apis.com/word-of-the-day");
     const processedResponse = await promise.json();
+    console.log("random word: ", processedResponse.word);
     selectedWord = processedResponse.word;
 }
 
 let selectedWord;
 apiRandomWord();
-console.log(selectedWord);
 
 //selector to query the divs with class rows
 const rows = document.querySelectorAll('.row');
