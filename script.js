@@ -37,7 +37,6 @@ function keyPressed(ev){
     }else if (squareCounter == 4 && ev.code == "Enter" && rowsChilds[0][squareCounter].textContent != ""){
         const promise = apiConfirmation(actualWord);
         actualWord = "";
-        round++;
         return true;
     }
 }
@@ -47,8 +46,6 @@ function compare(word){
     let numberLettersSelectedWord = mapNumberLetter(selectedWord.split(""));
 
     for (let i = 0; i < word.length; i++){
-        console.log("word[i]: ", word[i]);
-        console.log("selectedWord[i]: ", selectedWord[i]);
         if (word[i] == selectedWord[i]){
             rowsChilds[0][i].classList.add("correct");
             numberLettersSelectedWord[word[i]]--;
@@ -88,6 +85,7 @@ async function apiConfirmation(word){
     infoBarSpiral.classList.add("hidden");
     const processedResponse = await promise.json();
     if (processedResponse.validWord === true){
+        round++;
         compare(word);
         rowsChilds.shift();
         squareCounter = (squareCounter + 1) % 6;
