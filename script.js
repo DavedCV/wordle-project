@@ -37,22 +37,41 @@ function keyPressed(ev){
     }else if (squareCounter == 4 && ev.code == "Enter" && rowsChilds[0][squareCounter].textContent != ""){
         const promise = apiConfirmation(actualWord);
         actualWord = "";
+        round++;
         return true;
     }
 }
 
 function compare(word){
-    let copySelectedWord = selectedWord;
     let correctPosition = 0;
+    let numberLettersSelectedWord = mapNumberLetter(selectedWord.split(""));
+
     for (let i = 0; i < word.length; i++){
-        if (copySelectedWord.indexOf(word[i]) != -1){
-            (copySelectedWord.indexOf(word[i]) === i) ? (() => {rowsChilds[0][i].classList.add("correct");correctPosition++;})() :
-            rowsChilds[0][i].classList.add("close");
-            copySelectedWord = copySelectedWord.replace(word[i], "-");
+        console.log("word[i]: ", word[i]);
+        console.log("selectedWord[i]: ", selectedWord[i]);
+        if (word[i] == selectedWord[i]){
+            rowsChilds[0][i].classList.add("correct");
+            numberLettersSelectedWord[word[i]]--;
+            correctPosition++;
         }
     }
+
+    for (let i = 0; i < word.length; i++){
+        if (word[i] == selectedWord[i]){
+            //do nothing
+        }
+        else if (numberLettersSelectedWord[word[i]] && numberLettersSelectedWord[word[i]] > 0){
+            rowsChilds[0][i].classList.add("close");
+            numberLettersSelectedWord[word[i]]--;
+        }else{
+            rowsChilds[0][i].classList.add("wrong");
+        }
+    }
+
     if (correctPosition == 5){
-        finishGame();
+        finishGame(true);
+    }else if (round == 6){
+        finishGame(false);
     }
 }
 
@@ -87,8 +106,12 @@ async function apiRandomWord(){
     infoBarSpiral.classList.add("hidden");
 }
 
-function finishGame() {
-    alert("You Win!\nGame finished.");
+function finishGame(bool) {
+    if (bool){
+        alert("You Win!\nGame finished.");
+    }else{
+        alert("You lose! The word was ", selectedWord);
+    }
     container.removeEventListener('keydown', entryPoint);
 }
 
@@ -98,9 +121,23 @@ function entryPoint(ev) {
     }
 }
 
+function mapNumberLetter(array){
+    obj = {};
+    for (let i = 0; i < array.length; i++) {
+        if (obj[array[i]]){
+            obj[array[i]]++;
+        }else{
+            obj[array[i]] = 1; 
+        }    //arraySelectedWord = selectedWord.split("");
+
+    }
+    return obj;
+}
+
 const infoBarSpiral = document.querySelector(".info-bar");
 
 let selectedWord;
+let round = 0;
 apiRandomWord();
 
 //selector to query the divs with class rows
